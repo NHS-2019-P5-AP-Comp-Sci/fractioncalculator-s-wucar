@@ -191,7 +191,9 @@ public class FracCalc {
 		
 		String mixedProduct=productNumerator+"/"+productDenominator;
 		
-		return mixedProduct;
+		String product=reduced(mixedProduct);
+		
+		return product;
 		
 	}
 	
@@ -217,7 +219,9 @@ public class FracCalc {
 		
 		String mixedQuotient=quotientNumerator+"/"+quotientDenominator;
 		
-		return mixedQuotient;
+		String quotient=reduced(mixedQuotient);
+		
+		return quotient;
 	}
 	
 	public static String addition(String firstNumStr, String secondNumStr) { //returns the mixed, unsimplified sum
@@ -245,7 +249,9 @@ public class FracCalc {
 		
 		String mixedSum=(firstNewNumeratorIntCommon+secondNewNumeratorIntCommon)+"/"+commonDenominator;
 		
-		return mixedSum;
+		String sum=reduced(mixedSum);
+		
+		return sum;
 	}
 	
 	public static String subtraction(String firstNumStr, String secondNumStr) { //returns the mixed, unsimplified difference
@@ -273,25 +279,64 @@ public class FracCalc {
 		
 		String mixedDifference=(firstNewNumeratorIntCommon-secondNewNumeratorIntCommon)+"/"+commonDenominator;
 		
-		return mixedDifference;
+		String difference=reduced(mixedDifference);
+		
+		return difference;
 	}
 		
 	public static int gcf(int a, int b) { //returns greatest common factor of 2 numbers
-		if (a==1 || b==1) { //ex: gcf of 1 and 19 is 1
-			return 1;
-		}
-		if (a==b) {
-			return a;
-		}
-		double aDoub=(double) a;
-		double bDoub=(double) b;
-		if (aDoub/bDoub!=a/b && (a!=1 && b!=1)) { //ex: gcf of 5 and 8 is 1
-			return 1;
-		}
-		else {
-			return gcf(b, a%b);
-		}
+		
+		if(b == 0){
+            return a;
+        }
+        return gcf(b, a%b);
 		
 	}
 
+	public static String reduced(String mixedAns){
+
+		String reducedAns="";	
+
+		int fracIndex=mixedAns.indexOf("/");
+		String numerator=mixedAns.substring(0,fracIndex);
+		String denominator=mixedAns.substring(fracIndex+1);
+		
+		int numInt=Integer.parseInt(numerator);
+		int denomInt=Integer.parseInt(denominator);
+
+		int gcf=gcf(numInt,denomInt);
+
+		int newNum=numInt/gcf;
+		int newDenom=denomInt/gcf;
+
+		if (Math.abs(newNum)>Math.abs(newDenom)){
+			int whole=newNum/newDenom; // -20/7=-2
+			int newerNum=newNum-whole*newDenom; //-20-(-2)*7=-6
+			newerNum=Math.abs(newerNum);
+			newDenom=Math.abs(newDenom);
+			reducedAns=whole+"_"+newerNum+"/"+newDenom; //-2_-6/7
+		}
+
+		if (newNum==newDenom){
+			reducedAns="1";
+		}
+		
+		if (newNum==0) {
+			reducedAns="0";
+		}
+		
+		if (newDenom==1) {
+			reducedAns=newNum+"";
+		} else {
+				if (Math.abs(newNum)<Math.abs(newDenom) && (newNum!=0)) {
+					reducedAns=newNum+"/"+newDenom;
+				}
+		}
+		
+		return reducedAns;
+
+	}
+
+	
+	
 }
