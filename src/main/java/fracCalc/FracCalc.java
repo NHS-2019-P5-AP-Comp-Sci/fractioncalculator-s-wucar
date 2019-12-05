@@ -15,10 +15,9 @@ public class FracCalc {
 
 		System.out.println("Hi! This is FracCalc! Type \"quit\" to quit.");
 
-		while (!("quit   ".equals(input))) {
+		while (!("quit".equals(input))) {
 			System.out.print("Enter an equation: ");
 			input = userInput.nextLine();
-			input = input + "   ";
 			System.out.println(produceAnswer(input));
 
 		}
@@ -26,16 +25,6 @@ public class FracCalc {
 	}
 
 	public static String produceAnswer(String input) { // returns the answer
-
-		/*String firstNumStr = firstNum(input);
-		String firstWhole = fracSplitWhole(firstNumStr);
-		String firstNumerator = fracSplitNumerator(firstNumStr);
-		String firstDenominator = fracSplitDenominator(firstNumStr);
-
-		String secondNumStr = secondNum(input);
-		String secondWhole = fracSplitWhole(secondNumStr);
-		String secondNumerator = fracSplitNumerator(secondNumStr);
-		String secondDenominator = fracSplitDenominator(secondNumStr);*/
 		
 		String firstNumStr = firstNum(input);
 		String secondNumStr = secondNum(input);
@@ -44,18 +33,18 @@ public class FracCalc {
 		String operand=operand(input);
 		//if ("quit   ".equals(input))
 		if("*".equals(operand)) {
-			something=multiplication(input, firstNumStr, secondNumStr);
+			something=multiplication(firstNumStr, secondNumStr);
 		}
 		if("/".equals(operand)) {
-			something=division(input, firstNumStr, secondNumStr);
+			something=division(firstNumStr, secondNumStr);
 		}
 		if("+".equals(operand)) {
-			something=addition(input, firstNumStr, secondNumStr);
+			something=addition(firstNumStr, secondNumStr);
 		}
 		if("-".equals(operand)) {
-			something=subtraction(input, firstNumStr, secondNumStr);
+			something=subtraction(firstNumStr, secondNumStr);
 		}
-		if ("quit   ".equals(input)) {
+		if ("quit".equals(input)) {
 			something = "You've quit >:(";
 		}
 		
@@ -63,22 +52,23 @@ public class FracCalc {
 	}
 
 	public static String firstNum(String input) { // returns the entire first number
-
+		String firstNumStr="";
 		int spaceIndex = input.indexOf(" ");
-		String firstNumStr = input.substring(0, spaceIndex);
+		if (spaceIndex!=-1) {
+			firstNumStr = input.substring(0, spaceIndex);
+		}
 
 		return firstNumStr;
 	}
-
 	
 	public static String secondNum(String input) { // returns the entire second number
-
+		String secondNumStr="";
 		int spaceIndex = input.indexOf(" ");
-		String secondNumStr = input.substring(spaceIndex + 3);
-
+		if (spaceIndex!=-1) {
+			secondNumStr = input.substring(spaceIndex + 3);
+		}
 		return secondNumStr;
 	}
-
 	
 	public static String operand(String input) { // returns the operand
 
@@ -87,7 +77,6 @@ public class FracCalc {
 
 		return operand;
 	}
-
 	
 	public static String fracSplitWhole(String firstNumStr) { // if there is a whole number component, returns it
 
@@ -103,14 +92,13 @@ public class FracCalc {
 			if (slashIndex != -1) { // for y/z, returns whole=0
 				whole = "0";
 			} else { // for x, returns whole=x
-				whole = firstNumStr;
+				whole = "0";
 			}
 		}
 
 		return whole;
 
 	}
-
 	
 	public static String fracSplitNumerator(String firstNumStr) { // if there is a fraction component, returns the
 																	// numerator
@@ -128,15 +116,14 @@ public class FracCalc {
 			int slashIndex = firstNumStr.indexOf("/");
 			if (slashIndex != -1) { // for y/z, returns y
 				numerator = firstNumStr.substring(0, slashIndex);
-			} else { // for x, returns numerator=0
-				numerator = "0";
+			} else { // for x, returns numerator=x
+				numerator = firstNumStr;
 			}
 
 		}
 		return numerator;
 
 	}
-
 	
 	public static String fracSplitDenominator(String firstNumStr) { // if there is a fraction component, returns the
 																	// denominator
@@ -161,7 +148,6 @@ public class FracCalc {
 		}
 		return denominator;
 	}
-
 	
 	public static String newNumerator(String whole, String numerator, String denominator) { // whole*denom+num FIX
 		
@@ -170,6 +156,9 @@ public class FracCalc {
 		
 		int wholeInt = Integer.parseInt(whole);
 		int numeratorInt = Integer.parseInt(numerator);
+		if (wholeInt<0) {
+			numeratorInt*=-1;
+		}
 		int denominatorInt = Integer.parseInt(denominator);
 
 		int newNumeratorInt = wholeInt * denominatorInt + numeratorInt;
@@ -178,9 +167,8 @@ public class FracCalc {
 
 		return newNumerator;
 	}
-
 	
-	public static String multiplication(String input, String firstNumStr, String secondNumStr) { //returns the mixed, unsimplified product
+	public static String multiplication(String firstNumStr, String secondNumStr) { //returns the mixed, unsimplified product
 		
 		String firstWhole = fracSplitWhole(firstNumStr);
 		String firstNumerator = fracSplitNumerator(firstNumStr);
@@ -206,9 +194,8 @@ public class FracCalc {
 		return mixedProduct;
 		
 	}
-
 	
-	public static String division(String input, String firstNumStr, String secondNumStr) { // returns the mixed, unsimplified quotient
+	public static String division(String firstNumStr, String secondNumStr) { // returns the mixed, unsimplified quotient
 		String firstWhole = fracSplitWhole(firstNumStr);
 		String firstNumerator = fracSplitNumerator(firstNumStr);
 		String firstDenominator = fracSplitDenominator(firstNumStr); //
@@ -232,9 +219,8 @@ public class FracCalc {
 		
 		return mixedQuotient;
 	}
-
 	
-	public static String addition(String input, String firstNumStr, String secondNumStr) { //returns the mixed, unsimplified sum
+	public static String addition(String firstNumStr, String secondNumStr) { //returns the mixed, unsimplified sum
 		String firstWhole = fracSplitWhole(firstNumStr);
 		String firstNumerator = fracSplitNumerator(firstNumStr);
 		String firstDenominator = fracSplitDenominator(firstNumStr); //
@@ -261,9 +247,8 @@ public class FracCalc {
 		
 		return mixedSum;
 	}
-
 	
-	public static String subtraction(String input, String firstNumStr, String secondNumStr) { //returns the mixed, unsimplified difference
+	public static String subtraction(String firstNumStr, String secondNumStr) { //returns the mixed, unsimplified difference
 		String firstWhole = fracSplitWhole(firstNumStr);
 		String firstNumerator = fracSplitNumerator(firstNumStr);
 		String firstDenominator = fracSplitDenominator(firstNumStr); //
@@ -290,28 +275,23 @@ public class FracCalc {
 		
 		return mixedDifference;
 	}
-	
-	
-	public static int gcf(int a, int b) {
-		/*public static int GCF(int a, int b) {
-    		if (b == 0) {
-      			return a;
-		 	} else {
-      		return (GCF(b, a % b));
-    	 	}
-  		}*/
 		
-		if (a==1 || b==1) {
-			if (a!=1) {
-				return a;
-			} else {
-				return b;
-			}
-		} else {
+	public static int gcf(int a, int b) { //returns greatest common factor of 2 numbers
+		if (a==1 || b==1) { //ex: gcf of 1 and 19 is 1
+			return 1;
+		}
+		if (a==b) {
+			return a;
+		}
+		double aDoub=(double) a;
+		double bDoub=(double) b;
+		if (aDoub/bDoub!=a/b && (a!=1 && b!=1)) { //ex: gcf of 5 and 8 is 1
+			return 1;
+		}
+		else {
 			return gcf(b, a%b);
 		}
 		
 	}
-
 
 }
