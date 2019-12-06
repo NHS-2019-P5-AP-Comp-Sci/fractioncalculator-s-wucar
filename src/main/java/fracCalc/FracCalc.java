@@ -25,31 +25,44 @@ public class FracCalc {
 
 	}
 
-	public static String produceAnswer(String input) { // returns the answer
+	public static String produceAnswer(String input) { // returns the answer, error handling
 
 		String firstNumStr = firstNum(input);
 		String secondNumStr = secondNum(input);
-		String something = "";
+		String answer = "";
 
-		String operand = operand(input);
-		// if ("quit ".equals(input))
-		if ("*".equals(operand)) {
-			something = multiplication(firstNumStr, secondNumStr);
-		}
-		if ("/".equals(operand)) {
-			something = division(firstNumStr, secondNumStr);
-		}
-		if ("+".equals(operand)) {
-			something = addition(firstNumStr, secondNumStr);
-		}
-		if ("-".equals(operand)) {
-			something = subtraction(firstNumStr, secondNumStr);
-		}
-		if ("quit".equals(input)) {
-			something = "You've quit >:(";
+		if ((input.indexOf("++") != -1)||(input.indexOf("--") != -1)||(input.indexOf("**") != -1)||(input.indexOf("//") != -1)) {
+			answer = "ERROR: input is in an invalid format";
 		}
 
-		return something;
+		if ((input.indexOf("/0") != -1)||(input.indexOf("/ 0") != -1)) {
+			answer = "ERROR: cannot divide by zero";
+		}
+
+		else {
+			if ((input.indexOf("/0")) == -1 && (input.indexOf("/ 0")) == -1) {
+
+				String operand = operand(input);
+				// if ("quit ".equals(input))
+				if ("*".equals(operand) && (input.indexOf("**") == -1)) {
+					answer = multiplication(firstNumStr, secondNumStr);
+				}
+				if ("/".equals(operand) && (input.indexOf("//") == -1)) {
+					answer = division(firstNumStr, secondNumStr);
+				}
+				if ("+".equals(operand) && (input.indexOf("++") == -1)) {
+					answer = addition(firstNumStr, secondNumStr);
+				}
+				if ("-".equals(operand) && (input.indexOf("--") == -1)) {
+					answer = subtraction(firstNumStr, secondNumStr);
+				}
+				if ("quit".equals(input)) {
+					answer = "You've quit >:(";
+				}
+			}
+		}
+
+		return answer;
 	}
 
 	public static String firstNum(String input) { // returns the entire first number
@@ -299,7 +312,7 @@ public class FracCalc {
 
 	}
 
-	public static String reduced(String mixedAns) { // simplifies and reduces a mixed answer
+	public static String reduced(String mixedAns) { // returns a simplified and reduced answer from a mixed answer
 
 		String reducedAns = "";
 
